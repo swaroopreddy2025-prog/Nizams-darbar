@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Swaroop's Kitchen | Hyderabadi Cuisine</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --saffron: #E8891A;
+  --deep: #1a0a00;
+  --gold: #D4A017;
+  --cream: #FFF8EE;
+  --white: #FFFFFF;
+  --text: #2D1A00;
+  --muted: #7A6040;
+  --green: #2E7D32;
+  --red: #C62828;
+  --border: rgba(212,160,23,0.2);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--cream); color:var(--text); font-family:'Nunito',sans-serif; overflow-x:hidden; }
+
+/* ── HEADER ── */
+header {
+  background: linear-gradient(135deg, #1a0a00 0%, #3d1a00 60%, #1a0a00 100%);
+  position: sticky; top:0; z-index:500;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.35);
+}
+.header-top {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 24px;
+  border-bottom:1px solid rgba(212,160,23,0.25);
+}
+.logo { display:flex; align-items:center; gap:10px; }
+.logo-icon {
+  width:44px; height:44px; border-radius:50%;
+  background:linear-gradient(135deg,var(--saffron),var(--gold));
+  display:flex; align-items:center; justify-content:center; font-size:1.4rem;
+}
+.logo h1 {
+  font-family:'Cormorant Garamond',serif; font-size:1.5rem;
+  font-weight:700; color:#fff; line-height:1;
+}
+.logo small { font-size:0.65rem; color:var(--gold); letter-spacing:0.15em; text-transform:uppercase; display:block; }
+
+.header-right { display:flex; align-items:center; gap:10px; }
+.cart-fab {
+  background:linear-gradient(135deg,var(--saffron),var(--gold));
+  border:none; border-radius:100px; padding:9px 18px;
+  color:#fff; font-family:'Nunito',sans-serif; font-weight:700;
+  cursor:pointer; display:flex; align-items:center; gap:7px;
+  font-size:0.88rem; transition:transform 0.2s;
+}
+.cart-fab:hover { transform:scale(1.04); }
+.cart-badge {
+  background:#fff; color:var(--saffron); border-radius:50%;
+  width:20px; height:20px; display:flex; align-items:center;
+  justify-content:center; font-size:0.72rem; font-weight:800;
+}
+
+.cat-bar {
+  display:flex; overflow-x:auto; scrollbar-width:none; padding:0 12px;
+}
+.cat-bar::-webkit-scrollbar { display:none; }
+.cat-btn {
+  background:none; border:none; color:rgba(255,255,255,0.55);
+  font-family:'Nunito',sans-serif; font-size:0.8rem; font-weight:600;
+  padding:11px 16px; cursor:pointer; white-space:nowrap;
+  position:relative; transition:color 0.2s;
+}
+.cat-btn::after {
+  content:''; position:absolute; bottom:0; left:20%; right:20%;
+  height:2px; background:var(--gold); border-radius:2px;
+  transform:scaleX(0); transition:transform 0.2s;
+}
+.cat-btn.active { color:var(--gold); }
+.cat-btn.active::after { transform:scaleX(1); }
+
+/* ── HERO ── */
+.hero {
+  background:linear-gradient(135deg,#1a0a00,#4a1f00);
+  padding:40px 24px 32px; text-align:center; position:relative;
+}
+.hero::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(ellipse at 50% 50%,rgba(232,137,26,0.12),transparent 70%);
+}
+.hero h2 {
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.8rem,4vw,3rem); color:#fff; font-weight:700;
+  position:relative; margin-bottom:6px;
+}
+.hero h2 em { color:var(--gold); font-style:normal; }
+.hero p { color:rgba(255,255,255,0.6); font-size:0.88rem; position:relative; }
+.promo-tag {
+  display:inline-block; background:var(--red); color:#fff;
+  border-radius:100px; padding:5px 18px; font-size:0.78rem; font-weight:700;
+  margin-top:10px; position:relative;
+  animation:glow 2s ease-in-out infinite;
+}
+@keyframes glow {
+  0%,100% { box-shadow:0 0 0 0 rgba(198,40,40,0.5); }
+  50% { box-shadow:0 0 0 8px rgba(198,40,40,0); }
+}
+
+/* SEARCH */
+.search-wrap {
+  max-width:480px; margin:18px auto 0; position:relative; z-index:1;
+}
+.search-wrap input {
+  width:100%; padding:11px 18px 11px 42px;
+  border-radius:100px;
+  border:2px solid rgba(212,160,23,0.35);
+  background:rgba(255,255,255,0.12);
+  color:#fff; font-family:'Nunito',sans-serif; font-size:0.9rem;
+  outline:none; transition:border-color 0.2s;
+}
+.search-wrap input:focus { border-color:var(--gold); background:rgba(255,255,255,0.18); }
+.search-wrap input::placeholder { color:rgba(255,255,255,0.45); }
+.search-icon { position:absolute; left:15px; top:50%; transform:translateY(-50%); font-size:1rem; pointer-events:none; }
+
+/* ── LAYOUT ── */
+.page { display:flex; min-height:calc(100vh - 130px); }
+
+/* MENU */
+.menu-col { flex:1; padding:20px; min-width:0; }
+.sec-title {
+  font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:700;
+  color:var(--deep); margin-bottom:16px;
+  display:flex; align-items:center; gap:10px;
+}
+.sec-title::after { content:''; flex:1; height:1px; background:linear-gradient(to right,var(--gold),transparent); }
+
+.no-results {
+  text-align:center; padding:48px 20px; color:var(--muted);
+}
+.no-results .nr-icon { font-size:3rem; margin-bottom:12px; }
+
+.dish-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:14px;
+}
+.dish-card {
+  background:var(--white); border-radius:14px;
+  border:1px solid var(--border); overflow:hidden;
+  box-shadow:0 2px 10px rgba(0,0,0,0.06);
+  transition:transform 0.2s,box-shadow 0.2s;
+}
+.dish-card:hover { transform:translateY(-3px); box-shadow:0 10px 24px rgba(0,0,0,0.11); }
+
+.dish-thumb {
+  height:140px; position:relative;
+  background:linear-gradient(135deg,#f5e6c8,#e8c87a);
+  display:flex; align-items:center; justify-content:center;
+}
+.dish-emoji { font-size:3.2rem; }
+.disc-badge {
+  position:absolute; top:8px; left:8px;
+  background:var(--red); color:#fff; border-radius:100px;
+  padding:3px 9px; font-size:0.68rem; font-weight:800;
+}
+.veg-dot {
+  position:absolute; top:8px; right:8px;
+  width:18px; height:18px; border-radius:3px; border:2px solid;
+  display:flex; align-items:center; justify-content:center;
+}
+.veg-dot.veg { border-color:var(--green); }
+.veg-dot.veg::after { content:''; width:7px; height:7px; border-radius:50%; background:var(--green); }
+.veg-dot.nonveg { border-color:var(--red); }
+.veg-dot.nonveg::after {
+  content:''; border-left:5px solid transparent; border-right:5px solid transparent;
+  border-bottom:8px solid var(--red);
+}
+
+.dish-body { padding:12px; }
+.dish-name { font-weight:700; font-size:0.88rem; line-height:1.3; margin-bottom:4px; }
+.dish-desc { color:var(--muted); font-size:0.72rem; line-height:1.5; margin-bottom:10px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.dish-foot { display:flex; align-items:center; justify-content:space-between; }
+.price-now { font-weight:800; font-size:0.95rem; color:var(--saffron); }
+.price-old { font-size:0.74rem; color:var(--muted); text-decoration:line-through; margin-left:4px; }
+
+.add-btn {
+  background:none; border:2px solid var(--saffron); border-radius:8px;
+  padding:4px 12px; color:var(--saffron); font-family:'Nunito',sans-serif;
+  font-weight:700; font-size:0.8rem; cursor:pointer; transition:all 0.15s;
+}
+.add-btn:hover { background:var(--saffron); color:#fff; }
+.qty-row { display:flex; align-items:center; gap:5px; }
+.qty-row button {
+  width:24px; height:24px; border-radius:6px; border:none;
+  background:var(--saffron); color:#fff; font-size:1rem; font-weight:700;
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  line-height:1;
+}
+.qty-row span { font-weight:700; font-size:0.88rem; min-width:14px; text-align:center; }
+
+/* ── CART SIDEBAR ── */
+.cart-col {
+  width:320px; min-width:320px;
+  background:var(--white);
+  border-left:1px solid var(--border);
+  display:flex; flex-direction:column;
+  position:sticky; top:130px;
+  height:calc(100vh - 130px);
+  box-shadow:-4px 0 16px rgba(0,0,0,0.05);
+}
+.cart-head {
+  padding:16px 18px; border-bottom:1px solid var(--border);
+  display:flex; justify-content:space-between; align-items:center;
+}
+.cart-head h3 { font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:700; }
+.cart-head span { font-size:0.8rem; color:var(--muted); }
+
+.cart-body { flex:1; overflow-y:auto; padding:12px; }
+.cart-empty-msg { text-align:center; padding:32px 16px; color:var(--muted); }
+.cart-empty-msg .ce-icon { font-size:2.8rem; margin-bottom:10px; }
+.cart-empty-msg p { font-size:0.85rem; line-height:1.6; }
+
+.ci {
+  display:flex; gap:10px; align-items:flex-start;
+  padding:10px 0; border-bottom:1px solid #f5ead8;
+}
+.ci:last-child { border-bottom:none; }
+.ci-emoji { font-size:1.7rem; flex-shrink:0; }
+.ci-info { flex:1; min-width:0; }
+.ci-name { font-weight:700; font-size:0.82rem; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ci-price { color:var(--saffron); font-size:0.78rem; font-weight:700; }
+.ci-ctrl { display:flex; align-items:center; gap:5px; margin-top:6px; }
+.ci-ctrl button {
+  width:20px; height:20px; border-radius:5px; border:none;
+  background:var(--saffron); color:#fff; font-size:0.85rem; font-weight:700;
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+}
+.ci-ctrl .ci-qty { font-weight:700; font-size:0.8rem; }
+.ci-total { font-size:0.8rem; font-weight:700; color:var(--deep); }
+
+.cart-foot { padding:14px 16px; border-top:1px solid var(--border); }
+.bill-rows { margin-bottom:12px; }
+.br { display:flex; justify-content:space-between; font-size:0.82rem; padding:3px 0; color:var(--muted); }
+.br.grand { font-weight:800; font-size:0.98rem; color:var(--text); border-top:1px dashed var(--border); padding-top:8px; margin-top:4px; }
+.br.grand .gv { color:var(--saffron); font-size:1.05rem; }
+.br .savings { color:var(--green); font-weight:700; }
+
+.pay-btn {
+  width:100%; padding:13px; border:none; border-radius:12px;
+  background:linear-gradient(135deg,var(--saffron),var(--gold));
+  color:#fff; font-family:'Nunito',sans-serif;
+  font-weight:800; font-size:0.95rem; cursor:pointer;
+  transition:transform 0.2s, box-shadow 0.2s;
+}
+.pay-btn:hover { transform:scale(1.02); box-shadow:0 6px 20px rgba(232,137,26,0.4); }
+.pay-btn:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
+
+/* ── MOBILE CART TOGGLE ── */
+.mob-cart-bar {
+  display:none;
+  position:fixed; bottom:0; left:0; right:0; z-index:600;
+  background:linear-gradient(135deg,var(--saffron),var(--gold));
+  padding:14px 20px;
+  align-items:center; justify-content:space-between;
+  box-shadow:0 -4px 20px rgba(0,0,0,0.2);
+  cursor:pointer;
+}
+.mob-cart-bar .mcb-left { color:#fff; font-weight:700; font-size:0.9rem; }
+.mob-cart-bar .mcb-right {
+  background:#fff; color:var(--saffron);
+  border-radius:8px; padding:6px 16px;
+  font-weight:800; font-size:0.88rem;
+}
+
+/* ── PAYMENT MODAL ── */
+.overlay {
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,0.65); backdrop-filter:blur(4px);
+  z-index:900; align-items:center; justify-content:center; padding:16px;
+}
+.overlay.open { display:flex; }
+.modal {
+  background:#fff; border-radius:20px;
+  width:min(500px,100%); max-height:90vh;
+  overflow-y:auto; animation:slideUp 0.3s ease;
+}
+@keyframes slideUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+
+.mh {
+  background:linear-gradient(135deg,#1a0a00,#3d1a00);
+  padding:18px 22px; border-radius:20px 20px 0 0;
+  display:flex; justify-content:space-between; align-items:center;
+  position:sticky; top:0;
+}
+.mh h3 { font-family:'Cormorant Garamond',serif; color:#fff; font-size:1.35rem; }
+.mh-close {
+  background:rgba(255,255,255,0.15); border:none; border-radius:50%;
+  width:30px; height:30px; color:#fff; cursor:pointer; font-size:1rem;
+  display:flex; align-items:center; justify-content:center;
+}
+
+.mb { padding:22px; }
+
+.block-title {
+  font-size:0.7rem; letter-spacing:0.18em; text-transform:uppercase;
+  color:var(--muted); font-weight:700; margin-bottom:10px;
+}
+
+.order-lines { margin-bottom:18px; }
+.ol { display:flex; justify-content:space-between; font-size:0.85rem; padding:6px 0; border-bottom:1px solid #f5ead8; }
+.ol:last-child { border-bottom:none; }
+.ol-name { font-weight:600; }
+.ol-amt { font-weight:700; color:var(--saffron); }
+
+.bill-box {
+  background:#FFF8EE; border-radius:12px; padding:14px 16px;
+  border:1px solid var(--border); margin-bottom:20px;
+}
+.bbr { display:flex; justify-content:space-between; font-size:0.84rem; padding:4px 0; }
+.bbr.grand { font-weight:800; font-size:1rem; border-top:2px dashed var(--gold); margin-top:8px; padding-top:10px; }
+.bbr.grand span:last-child { color:var(--saffron); }
+.bbr .sv { color:var(--green); font-weight:700; }
+
+.pay-methods { margin-bottom:20px; }
+.pm {
+  border:2px solid var(--border); border-radius:10px; padding:11px 14px;
+  margin-bottom:8px; cursor:pointer;
+  display:flex; align-items:center; gap:10px; transition:all 0.15s;
+}
+.pm:hover { border-color:var(--saffron); }
+.pm.sel { border-color:var(--saffron); background:#FFF3E0; }
+.pm-icon { font-size:1.3rem; }
+.pm-txt .pm-name { font-weight:700; font-size:0.88rem; }
+.pm-txt .pm-sub { font-size:0.74rem; color:var(--muted); }
+.pm-radio {
+  width:18px; height:18px; border-radius:50%; border:2px solid var(--border);
+  margin-left:auto; flex-shrink:0; transition:all 0.15s;
+}
+.pm.sel .pm-radio { border-color:var(--saffron); background:var(--saffron); box-shadow:inset 0 0 0 3px #fff; }
+
+.place-btn {
+  width:100%; padding:15px; border:none; border-radius:12px;
+  background:linear-gradient(135deg,var(--green),#1B5E20);
+  color:#fff; font-family:'Nunito',sans-serif; font-weight:800; font-size:1rem;
+  cursor:pointer; transition:transform 0.2s,box-shadow 0.2s;
+}
+.place-btn:hover { transform:scale(1.02); box-shadow:0 6px 20px rgba(46,125,50,0.4); }
+
+/* SUCCESS */
+.success { display:none; text-align:center; padding:36px 22px; }
+.success.show { display:block; }
+.s-icon { font-size:4rem; animation:bounce 0.6s; }
+@keyframes bounce { 0%,100%{transform:scale(1)} 50%{transform:scale(1.25)} }
+.success h3 { font-family:'Cormorant Garamond',serif; font-size:1.9rem; color:var(--green); margin:12px 0 6px; }
+.success p { color:var(--muted); font-size:0.88rem; margin-bottom:4px; }
+.s-oid { font-weight:800; color:var(--saffron); font-size:1rem; margin:12px 0; }
+.eta-box {
+  background:#E8F5E9; border-radius:12px; padding:12px 16px;
+  margin:14px 0; display:flex; align-items:center; gap:10px;
+}
+.eta-box p { font-size:0.84rem; color:var(--green); font-weight:700; }
+.s-done {
+  width:100%; padding:13px; border:none; border-radius:12px; margin-top:8px;
+  background:linear-gradient(135deg,var(--saffron),var(--gold));
+  color:#fff; font-family:'Nunito',sans-serif; font-weight:800; font-size:0.95rem;
+  cursor:pointer;
+}
+
+/* ── TOAST ── */
+.toast {
+  position:fixed; bottom:80px; left:50%; transform:translateX(-50%);
+  background:rgba(26,10,0,0.9); color:#fff; padding:9px 20px;
+  border-radius:100px; font-size:0.84rem; font-weight:600;
+  z-index:1000; opacity:0; transition:opacity 0.3s; pointer-events:none;
+  white-space:nowrap;
+}
+.toast.show { opacity:1; }
+
+/* ── RESPONSIVE ── */
+@media(max-width:860px) {
+  .cart-col { display:none; }
+  .mob-cart-bar { display:flex; }
+  body { padding-bottom:70px; }
+}
+@media(max-width:500px) {
+  .dish-grid { grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); }
+  .header-top { padding:10px 14px; }
+  .hero { padding:28px 14px 24px; }
+  .menu-col { padding:14px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-top">
+    <div class="logo">
+      <div class="logo-icon">&#127869;</div>
+      <div>
+        <h1>Swaroop's Kitchen</h1>
+        <small>Authentic Hyderabadi Cuisine</small>
+      </div>
+    </div>
+    <div class="header-right">
+      <button class="cart-fab" onclick="openPayModal()">
+        &#128722; Cart <span class="cart-badge" id="cartBadge">0</span>
+      </button>
+    </div>
+  </div>
+  <div class="cat-bar">
+    <button class="cat-btn active" onclick="filterCat('all',this)">&#127859; All</button>
+    <button class="cat-btn" onclick="filterCat('biryani',this)">&#127859; Biryani</button>
+    <button class="cat-btn" onclick="filterCat('kebab',this)">&#129385; Kebabs</button>
+    <button class="cat-btn" onclick="filterCat('curry',this)">&#127858; Curries</button>
+    <button class="cat-btn" onclick="filterCat('snack',this)">&#127839; Snacks</button>
+    <button class="cat-btn" onclick="filterCat('dessert',this)">&#129473; Desserts</button>
+    <button class="cat-btn" onclick="filterCat('drinks',this)">&#9749; Drinks</button>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <h2>Royal Flavours of <em>Hyderabad</em></h2>
+  <p>50 Iconic Dishes &bull; Fresh Daily &bull; Delivered in 30 mins</p>
+  <div class="promo-tag">&#127381; UP TO 30% OFF on all dishes today!</div>
+  <div class="search-wrap">
+    <span class="search-icon">&#128269;</span>
+    <input type="text" id="searchBox" placeholder="Search biryani, haleem, kebabs..." />
+  </div>
+</div>
+
+<!-- MAIN PAGE -->
+<div class="page">
+  <!-- MENU -->
+  <div class="menu-col">
+    <div class="sec-title" id="secTitle">&#127859; All 50 Dishes</div>
+    <div class="dish-grid" id="dishGrid"></div>
+    <div class="no-results" id="noResults" style="display:none;">
+      <div class="nr-icon">&#128269;</div>
+      <p>No dishes found for "<span id="noTerm"></span>"<br>Try searching something else!</p>
+    </div>
+  </div>
+
+  <!-- CART SIDEBAR -->
+  <div class="cart-col" id="cartCol">
+    <div class="cart-head">
+      <h3>&#128722; Your Order</h3>
+      <span id="cartLabel">0 items</span>
+    </div>
+    <div class="cart-body" id="cartBody">
+      <div class="cart-empty-msg">
+        <div class="ce-icon">&#127869;</div>
+        <p>Your cart is empty!<br>Add delicious dishes to get started.</p>
+      </div>
+    </div>
+    <div class="cart-foot" id="cartFoot" style="display:none;">
+      <div class="bill-rows" id="cartBill"></div>
+      <button class="pay-btn" onclick="openPayModal()">&#9889; Proceed to Payment</button>
+    </div>
+  </div>
+</div>
+
+<!-- MOBILE CART BAR -->
+<div class="mob-cart-bar" id="mobBar" onclick="openPayModal()" style="display:none;">
+  <div class="mcb-left">&#128722; <span id="mobBarLabel">0 items</span></div>
+  <div class="mcb-right" id="mobBarAmt">&#8377;0</div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="mh">
+      <h3>&#128179; Payment</h3>
+      <button class="mh-close" onclick="closePayModal()">&#10005;</button>
+    </div>
+
+    <!-- PAY SCREEN -->
+    <div id="payScreen">
+      <div class="mb">
+        <div class="block-title">Order Summary</div>
+        <div class="order-lines" id="modalLines"></div>
+
+        <div class="bill-box">
+          <div class="block-title" style="margin-bottom:10px;">Bill Breakdown</div>
+          <div class="bbr"><span>Item Total</span><span id="m-sub">&#8377;0</span></div>
+          <div class="bbr"><span>Discount Savings</span><span class="sv" id="m-disc">-&#8377;0</span></div>
+          <div class="bbr"><span>Delivery</span><span id="m-del">&#8377;40</span></div>
+          <div class="bbr"><span>GST (5%)</span><span id="m-gst">&#8377;0</span></div>
+          <div class="bbr grand"><span>Grand Total</span><span id="m-total">&#8377;0</span></div>
+        </div>
+
+        <div class="pay-methods">
+          <div class="block-title">Payment Method</div>
+          <div class="pm sel" onclick="selPay(this,'upi')">
+            <span class="pm-icon">&#128241;</span>
+            <div class="pm-txt"><div class="pm-name">UPI / GPay / PhonePe</div><div class="pm-sub">Instant &bull; No charges</div></div>
+            <div class="pm-radio"></div>
+          </div>
+          <div class="pm" onclick="selPay(this,'card')">
+            <span class="pm-icon">&#128179;</span>
+            <div class="pm-txt"><div class="pm-name">Credit / Debit Card</div><div class="pm-sub">Visa &bull; Mastercard &bull; RuPay</div></div>
+            <div class="pm-radio"></div>
+          </div>
+          <div class="pm" onclick="selPay(this,'net')">
+            <span class="pm-icon">&#127968;</span>
+            <div class="pm-txt"><div class="pm-name">Net Banking</div><div class="pm-sub">All major banks supported</div></div>
+            <div class="pm-radio"></div>
+          </div>
+          <div class="pm" onclick="selPay(this,'cod')">
+            <span class="pm-icon">&#128181;</span>
+            <div class="pm-txt"><div class="pm-name">Cash on Delivery</div><div class="pm-sub">Pay when order arrives</div></div>
+            <div class="pm-radio"></div>
+          </div>
+        </div>
+
+        <button class="place-btn" onclick="placeOrder()">&#10004; Confirm &amp; Place Order</button>
+      </div>
+    </div>
+
+    <!-- SUCCESS SCREEN -->
+    <div class="success" id="successScreen">
+      <div class="s-icon">&#127881;</div>
+      <h3>Order Confirmed!</h3>
+      <p>Thank you for ordering from Swaroop's Kitchen</p>
+      <div class="s-oid" id="sOid"></div>
+      <div class="eta-box">
+        <span style="font-size:1.4rem;">&#128664;</span>
+        <p>Your order will be delivered in 25&ndash;35 minutes</p>
+      </div>
+      <p style="font-size:0.82rem;color:var(--muted);">Payment via <strong id="sPayMethod">UPI</strong></p>
+      <p style="font-size:0.82rem;color:var(--muted);margin-top:4px;">Amount: <strong id="sAmt" style="color:var(--saffron)"></strong></p>
+      <button class="s-done" onclick="doneOrder()">&#127968; Back to Menu</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─────────────────────────────────────────────
+// DISH DATA — plain text emojis, no HTML entities
+// ─────────────────────────────────────────────
+var DISHES = [
+  // BIRYANI
+  {id:1,  name:"Hyderabadi Dum Biryani",   em:"🍛", cat:"biryani", veg:false, price:349, orig:469, disc:25, desc:"Aromatic basmati rice with tender mutton, slow-cooked dum style with saffron"},
+  {id:2,  name:"Chicken Biryani",          em:"🍛", cat:"biryani", veg:false, price:279, orig:349, disc:20, desc:"Juicy chicken pieces layered with fragrant basmati rice and Hyderabadi spices"},
+  {id:3,  name:"Veg Dum Biryani",          em:"🍛", cat:"biryani", veg:true,  price:199, orig:249, disc:20, desc:"Mixed vegetables and paneer slow-cooked with basmati rice"},
+  {id:4,  name:"Kalyani Biryani",          em:"🍛", cat:"biryani", veg:false, price:259, orig:329, disc:21, desc:"Budget-friendly Hyderabadi biryani with beef, a favourite from Old City"},
+  {id:5,  name:"Egg Biryani",              em:"🍛", cat:"biryani", veg:false, price:179, orig:229, disc:21, desc:"Boiled eggs nestled in spiced basmati rice with fried onions and mint"},
+  {id:6,  name:"Prawn Biryani",            em:"🍛", cat:"biryani", veg:false, price:389, orig:499, disc:22, desc:"Juicy prawns marinated in coastal spices layered with premium long-grain rice"},
+  {id:7,  name:"Mushroom Biryani",         em:"🍛", cat:"biryani", veg:true,  price:189, orig:239, disc:20, desc:"Earthy mushrooms and caramelised onions in fragrant saffron rice"},
+  // KEBABS
+  {id:8,  name:"Shami Kebab",              em:"🍢", cat:"kebab",  veg:false, price:199, orig:269, disc:26, desc:"Silky minced mutton patties with chana dal, served with green chutney"},
+  {id:9,  name:"Seekh Kebab",              em:"🍢", cat:"kebab",  veg:false, price:229, orig:299, disc:23, desc:"Spiced minced meat on skewers, char-grilled to smoky perfection"},
+  {id:10, name:"Boti Kebab",               em:"🍢", cat:"kebab",  veg:false, price:249, orig:329, disc:24, desc:"Chunks of marinated mutton grilled on coal — tender, smoky, irresistible"},
+  {id:11, name:"Galouti Kebab",            em:"🍢", cat:"kebab",  veg:false, price:289, orig:379, disc:23, desc:"Melt-in-the-mouth minced lamb patties with over 100 spices"},
+  {id:12, name:"Kakori Kebab",             em:"🍢", cat:"kebab",  veg:false, price:269, orig:349, disc:22, desc:"Silky, melt-away mutton kebabs on thin skewers — a royal treat"},
+  {id:13, name:"Hara Bhara Kebab",         em:"🍢", cat:"kebab",  veg:true,  price:179, orig:229, disc:21, desc:"Pan-fried spinach, peas and paneer patties — crisp outside, soft inside"},
+  {id:14, name:"Chicken Malai Tikka",      em:"🍢", cat:"kebab",  veg:false, price:239, orig:309, disc:22, desc:"Creamy marinated chicken tikka grilled to a golden char"},
+  // CURRIES
+  {id:15, name:"Haleem",                   em:"🍲", cat:"curry",  veg:false, price:229, orig:299, disc:23, desc:"Slow-cooked wheat and mutton stew — the legendary Ramadan dish"},
+  {id:16, name:"Mutton Marag",             em:"🍲", cat:"curry",  veg:false, price:279, orig:349, disc:20, desc:"Delicate mutton bone broth soup — Hyderabad's beloved wedding starter"},
+  {id:17, name:"Mirchi Ka Salan",          em:"🍲", cat:"curry",  veg:true,  price:149, orig:199, disc:25, desc:"Green chillies in a rich peanut, coconut and sesame gravy"},
+  {id:18, name:"Bagara Baingan",           em:"🍲", cat:"curry",  veg:true,  price:159, orig:209, disc:23, desc:"Baby eggplants stuffed and cooked in a rich tamarind and peanut gravy"},
+  {id:19, name:"Mutton Dalcha",            em:"🍲", cat:"curry",  veg:false, price:249, orig:319, disc:21, desc:"Mutton and chana dal slow-cooked with bottle gourd — comfort in a bowl"},
+  {id:20, name:"Paya Curry",              em:"🍲", cat:"curry",  veg:false, price:239, orig:299, disc:19, desc:"Slow-cooked goat trotters in a rich spiced broth, best with naan"},
+  {id:21, name:"Nihari",                  em:"🍲", cat:"curry",  veg:false, price:259, orig:339, disc:23, desc:"Slow-cooked meat stew infused overnight with warm spices"},
+  {id:22, name:"Butter Chicken",          em:"🍲", cat:"curry",  veg:false, price:279, orig:349, disc:20, desc:"Tender chicken in a velvety tomato-butter-cream gravy, mildly spiced"},
+  {id:23, name:"Malai Paya",              em:"🍲", cat:"curry",  veg:false, price:259, orig:329, disc:21, desc:"Goat trotters cooked softly in creamy milk and butter sauce"},
+  {id:24, name:"Dal Tadka",               em:"🍲", cat:"curry",  veg:true,  price:129, orig:169, disc:23, desc:"Hyderabadi lentils tempered with mustard, curry leaves, dried red chillies"},
+  {id:25, name:"Paneer Makhani",          em:"🍲", cat:"curry",  veg:true,  price:219, orig:279, disc:21, desc:"Paneer cubes in a luscious saffron-tomato butter gravy"},
+  {id:26, name:"Chicken 65",             em:"🍲", cat:"curry",  veg:false, price:199, orig:259, disc:23, desc:"Deep-fried crispy chicken with curry leaves — Hyderabad's favourite starter"},
+  {id:27, name:"Andhra Chicken Curry",   em:"🍲", cat:"curry",  veg:false, price:229, orig:299, disc:23, desc:"Fiery Andhra-style chicken curry with a bold red masala base"},
+  {id:28, name:"Bheja Fry",              em:"🍲", cat:"curry",  veg:false, price:189, orig:249, disc:24, desc:"Spicy pan-fried goat brain — an Old City breakfast delicacy"},
+  // SNACKS
+  {id:29, name:"Mirchi Bajji",           em:"🌶️", cat:"snack",  veg:true,  price:59,  orig:79,  disc:25, desc:"Large green chillies dipped in gram flour batter and deep-fried"},
+  {id:30, name:"Keema Samosa",           em:"🥟", cat:"snack",  veg:false, price:79,  orig:99,  disc:20, desc:"Crispy pastry pockets stuffed with spiced minced meat"},
+  {id:31, name:"Pesarattu",              em:"🫓", cat:"snack",  veg:true,  price:99,  orig:129, disc:23, desc:"Crisp green gram crepe with upma filling — a classic Andhra breakfast"},
+  {id:32, name:"Pav Bhaji",              em:"🥙", cat:"snack",  veg:true,  price:109, orig:149, disc:26, desc:"Spicy mixed vegetable mash with buttered pav — Hyderabadi street-style"},
+  {id:33, name:"Vada Pav",              em:"🥪", cat:"snack",  veg:true,  price:49,  orig:69,  disc:29, desc:"Spicy potato fritter in a soft pav with chutneys"},
+  {id:34, name:"Aloo Tikki",            em:"🥔", cat:"snack",  veg:true,  price:69,  orig:89,  disc:22, desc:"Crispy potato patties with tamarind, green chutney and yogurt"},
+  {id:35, name:"Bread Pakora",          em:"🍞", cat:"snack",  veg:true,  price:59,  orig:79,  disc:25, desc:"Stuffed bread fritters with a spicy potato filling — perfect tea companion"},
+  {id:36, name:"Mutton Roll",           em:"🌯", cat:"snack",  veg:false, price:129, orig:169, disc:23, desc:"Spiced minced mutton wrapped in a flaky paratha with onions and chutney"},
+  {id:37, name:"Shawarma",             em:"🌯", cat:"snack",  veg:false, price:119, orig:159, disc:25, desc:"Hyderabadi-style chicken shawarma with garlic sauce in soft bread"},
+  {id:38, name:"Osmania Biscuit",      em:"🍪", cat:"snack",  veg:true,  price:49,  orig:59,  disc:16, desc:"Soft, buttery biscuits named after the Nizam — perfect with Irani chai"},
+  {id:39, name:"Dahi Puri",            em:"🫙", cat:"snack",  veg:true,  price:79,  orig:99,  disc:20, desc:"Crispy puris filled with potatoes and drenched in sweet and tangy chutneys"},
+  {id:40, name:"Andhra Thali",         em:"🍱", cat:"snack",  veg:true,  price:169, orig:229, disc:26, desc:"Unlimited banana leaf Andhra thali with rice, curries, papads, and pickles"},
+  // DESSERTS
+  {id:41, name:"Qubani Ka Meetha",     em:"🍮", cat:"dessert", veg:true, price:99,  orig:129, disc:23, desc:"Slow-cooked dried apricots in sugar syrup topped with fresh cream"},
+  {id:42, name:"Double Ka Meetha",    em:"🍮", cat:"dessert", veg:true, price:89,  orig:119, disc:25, desc:"Deep-fried bread soaked in saffron milk, garnished with nuts"},
+  {id:43, name:"Phirni",              em:"🍮", cat:"dessert", veg:true, price:79,  orig:99,  disc:20, desc:"Creamy ground rice pudding with rose water and cardamom, served chilled"},
+  {id:44, name:"Jauzi Halwa",         em:"🍮", cat:"dessert", veg:true, price:119, orig:149, disc:20, desc:"Rich halwa from oat milk, ghee, saffron and dry fruits — the Nizam's favourite"},
+  {id:45, name:"Shahi Tukda",         em:"🍮", cat:"dessert", veg:true, price:89,  orig:119, disc:25, desc:"Fried bread topped with rabri, saffron, pistachios — a Mughal dessert"},
+  {id:46, name:"Khubani Ice Cream",   em:"🍦", cat:"dessert", veg:true, price:99,  orig:129, disc:23, desc:"Apricot-flavoured handmade ice cream — a Hyderabadi frozen classic"},
+  // DRINKS
+  {id:47, name:"Irani Chai",          em:"☕", cat:"drinks",  veg:true, price:39,  orig:49,  disc:20, desc:"Persian-style creamy tea brewed in an urn — best with Osmania biscuits"},
+  {id:48, name:"Rooh Afza Sharbat",   em:"🥤", cat:"drinks",  veg:true, price:59,  orig:79,  disc:25, desc:"Chilled rose syrup drink — Hyderabad's summer favourite"},
+  {id:49, name:"Lassi",              em:"🥛", cat:"drinks",  veg:true, price:69,  orig:89,  disc:22, desc:"Thick sweet yogurt drink with cardamom, topped with malai"},
+  {id:50, name:"Kesar Badam Milk",   em:"🥛", cat:"drinks",  veg:true, price:89,  orig:109, disc:18, desc:"Warm saffron almond milk — a soothing royal drink from Nizam's kitchens"},
+];
+
+// ─── STATE ───
+var cart = {}; // { id: qty }
+var currentCat = 'all';
+var currentSearch = '';
+var selectedPay = 'upi';
+
+// ─── FILTER & RENDER DISHES ───
+function getFiltered() {
+  var term = currentSearch.trim().toLowerCase();
+  return DISHES.filter(function(d) {
+    var matchCat = currentCat === 'all' || d.cat === currentCat;
+    var matchSearch = !term ||
+      d.name.toLowerCase().indexOf(term) !== -1 ||
+      d.desc.toLowerCase().indexOf(term) !== -1 ||
+      d.cat.toLowerCase().indexOf(term) !== -1;
+    return matchCat && matchSearch;
+  });
+}
+
+function renderDishes() {
+  var filtered = getFiltered();
+  var grid = document.getElementById('dishGrid');
+  var noRes = document.getElementById('noResults');
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '';
+    noRes.style.display = 'block';
+    document.getElementById('noTerm').textContent = currentSearch;
+    document.getElementById('secTitle').textContent = '🔍 No Results';
+    return;
+  }
+
+  noRes.style.display = 'none';
+  var label = currentCat === 'all'
+    ? '🍽️ All 50 Dishes'
+    : '🍽️ ' + filtered.length + ' Dish' + (filtered.length !== 1 ? 'es' : '');
+  if (currentSearch) label = '🔍 ' + filtered.length + ' result' + (filtered.length !== 1 ? 's' : '') + ' for "' + currentSearch + '"';
+  document.getElementById('secTitle').textContent = label;
+
+  grid.innerHTML = filtered.map(function(d) {
+    var qty = cart[d.id] || 0;
+    var vegClass = d.veg ? 'veg' : 'nonveg';
+    var ctrlHtml = qty === 0
+      ? '<button class="add-btn" onclick="addItem(' + d.id + ')">+ ADD</button>'
+      : '<div class="qty-row"><button onclick="removeItem(' + d.id + ')">&#8722;</button><span>' + qty + '</span><button onclick="addItem(' + d.id + ')">+</button></div>';
+    return [
+      '<div class="dish-card">',
+        '<div class="dish-thumb">',
+          '<span class="dish-emoji">' + d.em + '</span>',
+          '<div class="disc-badge">&#127991; ' + d.disc + '% OFF</div>',
+          '<div class="veg-dot ' + vegClass + '"></div>',
+        '</div>',
+        '<div class="dish-body">',
+          '<div class="dish-name">' + d.name + '</div>',
+          '<div class="dish-desc">' + d.desc + '</div>',
+          '<div class="dish-foot">',
+            '<div>',
+              '<span class="price-now">&#8377;' + d.price + '</span>',
+              '<span class="price-old">&#8377;' + d.orig + '</span>',
+            '</div>',
+            ctrlHtml,
+          '</div>',
+        '</div>',
+      '</div>'
+    ].join('');
+  }).join('');
+}
+
+// ─── CATEGORY FILTER ───
+function filterCat(cat, btn) {
+  currentCat = cat;
+  document.querySelectorAll('.cat-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  renderDishes();
+}
+
+// ─── SEARCH (live, on keyup) ───
+document.getElementById('searchBox').addEventListener('input', function() {
+  currentSearch = this.value;
+  renderDishes();
+});
+
+// ─── CART ───
+function addItem(id) {
+  cart[id] = (cart[id] || 0) + 1;
+  updateCart();
+  renderDishes();
+  toast('Added to cart!');
+}
+
+function removeItem(id) {
+  if (!cart[id]) return;
+  cart[id]--;
+  if (cart[id] <= 0) delete cart[id];
+  updateCart();
+  renderDishes();
+}
+
+function calcTotals() {
+  var sub = 0, disc = 0;
+  Object.keys(cart).forEach(function(k) {
+    var d = DISHES.find(function(x) { return x.id == k; });
+    var qty = cart[k];
+    sub  += d.price * qty;
+    disc += (d.orig - d.price) * qty;
+  });
+  var gst = Math.round(sub * 0.05);
+  var del = sub > 500 ? 0 : 40;
+  var total = sub + gst + del;
+  return { sub:sub, disc:disc, gst:gst, del:del, total:total };
+}
+
+function updateCart() {
+  var keys = Object.keys(cart);
+  var count = keys.reduce(function(s,k) { return s + cart[k]; }, 0);
+  document.getElementById('cartBadge').textContent = count;
+  document.getElementById('cartLabel').textContent = count + ' item' + (count !== 1 ? 's' : '');
+
+  var body = document.getElementById('cartBody');
+  var foot = document.getElementById('cartFoot');
+  var mobBar = document.getElementById('mobBar');
+
+  if (keys.length === 0) {
+    body.innerHTML = '<div class="cart-empty-msg"><div class="ce-icon">&#127869;</div><p>Your cart is empty!<br>Add delicious dishes to get started.</p></div>';
+    foot.style.display = 'none';
+    mobBar.style.display = 'none';
+    return;
+  }
+
+  var t = calcTotals();
+
+  // Render cart items
+  body.innerHTML = keys.map(function(k) {
+    var d = DISHES.find(function(x) { return x.id == k; });
+    var qty = cart[k];
+    return [
+      '<div class="ci">',
+        '<span class="ci-emoji">' + d.em + '</span>',
+        '<div class="ci-info">',
+          '<div class="ci-name">' + d.name + '</div>',
+          '<div class="ci-price">&#8377;' + d.price + ' each</div>',
+          '<div class="ci-ctrl">',
+            '<button onclick="removeItem(' + d.id + ')">&#8722;</button>',
+            '<span class="ci-qty">' + qty + '</span>',
+            '<button onclick="addItem(' + d.id + ')">+</button>',
+            '<span class="ci-total">= &#8377;' + (d.price * qty) + '</span>',
+          '</div>',
+        '</div>',
+      '</div>'
+    ].join('');
+  }).join('');
+
+  // Bill summary
+  document.getElementById('cartBill').innerHTML = [
+    '<div class="br"><span>Subtotal</span><span>&#8377;' + t.sub + '</span></div>',
+    '<div class="br"><span>Discount</span><span class="savings">-&#8377;' + t.disc + '</span></div>',
+    '<div class="br"><span>Delivery</span><span>' + (t.del === 0 ? 'FREE &#127881;' : '&#8377;' + t.del) + '</span></div>',
+    '<div class="br"><span>GST (5%)</span><span>&#8377;' + t.gst + '</span></div>',
+    '<div class="br grand"><span>Total</span><span class="gv">&#8377;' + t.total + '</span></div>'
+  ].join('');
+
+  foot.style.display = 'block';
+
+  // Mobile bar
+  mobBar.style.display = 'flex';
+  document.getElementById('mobBarLabel').textContent = count + ' item' + (count !== 1 ? 's' : '');
+  document.getElementById('mobBarAmt').textContent = '&#8377;' + t.total + '  Pay Now';
+}
+
+// ─── PAYMENT MODAL ───
+function openPayModal() {
+  if (Object.keys(cart).length === 0) { toast('Add items to your cart first!'); return; }
+
+  var keys = Object.keys(cart);
+  var t = calcTotals();
+
+  document.getElementById('modalLines').innerHTML = keys.map(function(k) {
+    var d = DISHES.find(function(x) { return x.id == k; });
+    var qty = cart[k];
+    return '<div class="ol"><span class="ol-name">' + d.em + ' ' + d.name + ' x' + qty + '</span><span class="ol-amt">&#8377;' + (d.price * qty) + '</span></div>';
+  }).join('');
+
+  document.getElementById('m-sub').textContent   = '₹' + t.sub;
+  document.getElementById('m-disc').textContent  = '-₹' + t.disc;
+  document.getElementById('m-gst').textContent   = '₹' + t.gst;
+  document.getElementById('m-del').textContent   = t.del === 0 ? 'FREE 🎉' : '₹' + t.del;
+  document.getElementById('m-total').textContent = '₹' + t.total;
+
+  document.getElementById('payScreen').style.display = 'block';
+  document.getElementById('successScreen').classList.remove('show');
+  document.getElementById('overlay').classList.add('open');
+}
+
+function closePayModal() {
+  document.getElementById('overlay').classList.remove('open');
+}
+
+// Close overlay on backdrop click
+document.getElementById('overlay').addEventListener('click', function(e) {
+  if (e.target === this) closePayModal();
+});
+
+function selPay(el, method) {
+  document.querySelectorAll('.pm').forEach(function(p) { p.classList.remove('sel'); });
+  el.classList.add('sel');
+  selectedPay = method;
+}
+
+function placeOrder() {
+  var t = calcTotals();
+  var labels = { upi:'UPI / GPay', card:'Credit/Debit Card', net:'Net Banking', cod:'Cash on Delivery' };
+  var oid = 'SK' + Date.now().toString().slice(-6);
+  document.getElementById('sOid').textContent = 'Order ID: ' + oid;
+  document.getElementById('sPayMethod').textContent = labels[selectedPay];
+  document.getElementById('sAmt').textContent = '₹' + t.total;
+  document.getElementById('payScreen').style.display = 'none';
+  document.getElementById('successScreen').classList.add('show');
+}
+
+function doneOrder() {
+  closePayModal();
+  cart = {};
+  updateCart();
+  renderDishes();
+  toast('Thank you! Your order is on the way 🚀');
+}
+
+// ─── TOAST ───
+function toast(msg) {
+  var el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(function() { el.classList.remove('show'); }, 2200);
+}
+
+// ─── INIT ───
+renderDishes();
+</script>
+</body>
+</html>
